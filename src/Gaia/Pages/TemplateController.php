@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller;
 use Gaia\Repositories\ComponentTypeRepositoryInterface;
 use Gaia\Repositories\TemplateRepositoryInterface;
 //Requests
-use Gaia\News\TemplateRequest;
+use Gaia\Pages\TemplateRequest;
 //Facades
 use Redirect;
 use Input;

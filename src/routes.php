@@ -13,27 +13,27 @@
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
 {
-	Route::get('pages/templates', [ 'as' => 'admin.pages.templates.index', 'uses' => 'TemplateController@index']);
-	Route::get('pages/templates/create', [ 'as' => 'admin.pages.templates.create', 'uses' => 'TemplateController@create']);
-	Route::post('pages/templates/store', [ 'as' => 'admin.pages.templates.store',  'uses' => 'TemplateController@store']);
-	Route::get('pages/templates/{id}/build',  [ 'as' => 'admin.pages.templates.build',  'uses'  => 'TemplateController@build']);
-	Route::post('pages/templates/{id}/delete',  [ 'as' => 'admin.pages.templates.delete',  'uses'  => 'TemplateController@destroy']);
+	Route::get('pages/templates', [ 'as' => 'admin.pages.templates.index', 'uses' => 'Gaia\Pages\TemplateController@index']);
+	Route::get('pages/templates/create', [ 'as' => 'admin.pages.templates.create', 'uses' => 'Gaia\Pages\TemplateController@create']);
+	Route::post('pages/templates/store', [ 'as' => 'admin.pages.templates.store',  'uses' => 'Gaia\Pages\TemplateController@store']);
+	Route::get('pages/templates/{id}/build',  [ 'as' => 'admin.pages.templates.build',  'uses'  => 'Gaia\Pages\TemplateController@build']);
+	Route::post('pages/templates/{id}/delete',  [ 'as' => 'admin.pages.templates.delete',  'uses'  => 'Gaia\Pages\TemplateController@destroy']);
 	
 	//Add sections/components
-	Route::post('pages/templates/{id}/create-section',  [ 'as' => 'admin.pages.templates.add-section',  'uses'  => 'TemplateController@storeSection']);
-	Route::post('pages/templates/{id}/create-component',  [ 'as' => 'admin.pages.templates.add-component',  'uses'  => 'TemplateController@storeComponent']);
+	Route::post('pages/templates/{id}/create-section',  [ 'as' => 'admin.pages.templates.add-section',  'uses'  => 'Gaia\Pages\TemplateController@storeSection']);
+	Route::post('pages/templates/{id}/create-component',  [ 'as' => 'admin.pages.templates.add-component',  'uses'  => 'Gaia\Pages\TemplateController@storeComponent']);
 
 	//Reorder Sections/Components
-	Route::post('pages/templates/{id}/reorder-sections',  [ 'as' => 'admin.pages.templates.reorder-sections',  'uses'  => 'TemplateController@reorderSections']);
-	Route::post('pages/templates/{id}/reorder-components',  [ 'as' => 'admin.pages.templates.reorder-components',  'uses'  => 'TemplateController@reorderComponents']);
+	Route::post('pages/templates/{id}/reorder-sections',  [ 'as' => 'admin.pages.templates.reorder-sections',  'uses'  => 'Gaia\Pages\TemplateController@reorderSections']);
+	Route::post('pages/templates/{id}/reorder-components',  [ 'as' => 'admin.pages.templates.reorder-components',  'uses'  => 'Gaia\Pages\TemplateController@reorderComponents']);
 
 	//Template Builder Editables
-	Route::post('pages/templates/{id}/update-section-title',  [ 'as' => 'admin.pages.templates.update-section-title',  'uses'  => 'TemplateController@updateSectionTitle']);
-	Route::post('pages/templates/{id}/update-component-title',  [ 'as' => 'admin.pages.templates.update-component-title',  'uses'  => 'TemplateController@updateComponentTitle']);
-	Route::post('pages/templates/{id}/update-component-options',  [ 'as' => 'admin.pages.templates.update-component-options',  'uses'  => 'TemplateController@updateComponentOptions']);
+	Route::post('pages/templates/{id}/update-section-title',  [ 'as' => 'admin.pages.templates.update-section-title',  'uses'  => 'Gaia\Pages\TemplateController@updateSectionTitle']);
+	Route::post('pages/templates/{id}/update-component-title',  [ 'as' => 'admin.pages.templates.update-component-title',  'uses'  => 'Gaia\Pages\TemplateController@updateComponentTitle']);
+	Route::post('pages/templates/{id}/update-component-options',  [ 'as' => 'admin.pages.templates.update-component-options',  'uses'  => 'Gaia\Pages\TemplateController@updateComponentOptions']);
 
 	//Remove Sections/Components
-	Route::post('pages/templates/{id}/remove-section',  [ 'as' => 'admin.pages.templates.delete-section',  'uses'  => 'TemplateController@destroySection']);
-	Route::post('pages/templates/{id}/remove-component',  [ 'as' => 'admin.pages.templates.delete-component',  'uses'  => 'TemplateController@destroyComponent']);
+	Route::post('pages/templates/{id}/remove-section',  [ 'as' => 'admin.pages.templates.delete-section',  'uses'  => 'Gaia\Pages\TemplateController@destroySection']);
+	Route::post('pages/templates/{id}/remove-component',  [ 'as' => 'admin.pages.templates.delete-component',  'uses'  => 'Gaia\Pages\TemplateController@destroyComponent']);
 
 });
