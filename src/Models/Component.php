@@ -43,4 +43,30 @@ class Component extends Model {
 	}
 
 
+	/**
+	 * Renders the form row in the create page
+	 * @return type
+	 */
+	public function renderFormRow()
+	{
+		$namespace = 'App\Models\Components';
+		$className = "\\".$this->componentType->class_name;
+		$class =  $namespace.$className;
+		$object = new $class;
+		$object->setComponent($this);
+		return $object->renderFormRow();
+
+	}
+
+
+	/**
+	 * Transforms the options field into an array
+	 * @return type
+	 */
+	public function optionsToArray()
+	{
+		return explode( '<br />', $this->options);
+	}
+
+
 }

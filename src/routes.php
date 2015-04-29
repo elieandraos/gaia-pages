@@ -13,6 +13,7 @@
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
 {
+	//page templates
 	Route::get('pages/templates', [ 'as' => 'admin.pages.templates.index', 'uses' => 'Gaia\Pages\TemplateController@index']);
 	Route::get('pages/templates/create', [ 'as' => 'admin.pages.templates.create', 'uses' => 'Gaia\Pages\TemplateController@create']);
 	Route::post('pages/templates/store', [ 'as' => 'admin.pages.templates.store',  'uses' => 'Gaia\Pages\TemplateController@store']);
@@ -35,5 +36,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
 	//Remove Sections/Components
 	Route::post('pages/templates/{id}/remove-section',  [ 'as' => 'admin.pages.templates.delete-section',  'uses'  => 'Gaia\Pages\TemplateController@destroySection']);
 	Route::post('pages/templates/{id}/remove-component',  [ 'as' => 'admin.pages.templates.delete-component',  'uses'  => 'Gaia\Pages\TemplateController@destroyComponent']);
+
+
+	//Pages
+	Route::get('pages/', [ 'as' => 'admin.pages.index', 'uses' => 'PageController@index']);
+	Route::get('pages/create', [ 'as' => 'admin.pages.create', 'uses' => 'PageController@create']);
+	Route::post('pages/store', [ 'as' => 'admin.pages.store',  'uses' => 'PageController@store']);
+	Route::get('pages/{id}/edit',  [ 'as' => 'admin.pages.edit',  'uses'  => 'PageController@edit']);
+	Route::post('pages/{id}/update',  [ 'as' => 'admin.pages.update',  'uses'  => 'PageController@update']);
+	Route::post('pages/{id}/delete',  [ 'as' => 'admin.pages.delete',  'uses'  => 'PageController@destroy']);
 
 });

@@ -41,6 +41,8 @@ class GaiaPagesServiceProvider extends ServiceProvider
     {
         $this->app->bind('Gaia\Repositories\ComponentTypeRepositoryInterface', 'Gaia\Repositories\ComponentTypeRepository');
         $this->app->bind('Gaia\Repositories\TemplateRepositoryInterface', 'Gaia\Repositories\TemplateRepository');
+        $this->app->bind('Gaia\Repositories\PageRepositoryInterface', 'Gaia\Repositories\PageRepository');
+
     }
 
     /**

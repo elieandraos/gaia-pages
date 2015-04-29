@@ -24,4 +24,16 @@ class TextComponent extends Component {
 		return $view->render();
 	}
 
+
+	/**
+	 * Render the component form row in the page create
+	 * @return type
+	 */
+	public function renderFormRow()
+	{
+		$view = View::make('admin.templates.components._text_form_row', ['component' => $this->component]);
+		return $view->render();
+
+	} 
+
 }

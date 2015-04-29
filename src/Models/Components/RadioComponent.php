@@ -24,4 +24,17 @@ class RadioComponent extends Component {
 		return $view->render();
 	}
 
+
+
+	/**
+	 * Render the component form row in the page create
+	 * @return type
+	 */
+	public function renderFormRow()
+	{
+		$options = $this->component->optionsToArray();
+		$view = View::make('admin.templates.components._radio_form_row', ['component' => $this->component, 'options' => $options]);
+		return $view->render();
+	} 
+
 }

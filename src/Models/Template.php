@@ -8,10 +8,22 @@ class Template extends Model {
 	protected $fillable = ['title', 'display'];
 	protected $hidden = [];
 
-
+	/**
+	 * Section Relation
+	 * @return type
+	 */
 	public function sections()
 	{
 		return $this->hasMany('App\Models\Section');
+	}
+
+	/**
+	 * Page Relation
+	 * @return type
+	 */
+	public function pages()
+	{
+		return $this->hasMany('App\Models\Page');
 	}
 
 }

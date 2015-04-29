@@ -22,7 +22,7 @@
 	   data-title="Enter options (one per line)"
 	   data-emptytext="Add Options"
 	>
-		{{ $component->options }} 
+		{{ str_replace('<br />', '', $component->options) }}  
 	</a>
 
 	<!-- info -->

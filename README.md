@@ -39,3 +39,4 @@ Create the tables and seeds
 ```
 php artisan migrate
 php artisan db:seed --class=ComponentTypeTableSeeder
+php artisan db:seed --class=TemplateTableSeeder

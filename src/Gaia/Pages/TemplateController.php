@@ -221,7 +221,7 @@ class TemplateController extends Controller {
 	{
 		$inputs = Input::all();
 		$component = $this->templateRepos->findComponent($inputs['pk']);
-        $component->options = $inputs['value'];
+        $component->options = nl2br($inputs['value']);
         $component->save();
 	}
 
