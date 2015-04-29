@@ -1,0 +1,23 @@
+{
+    "name": "eandraos/gaia-pages",
+    "description": "Pages module for the Gaia CMS project",
+    "authors": [
+        {
+            "name": "Elie Andraos",
+            "email": "elie@andraos.org",
+            "role": "Developer"
+        }
+    ],
+    "keywords": ["laravel 5", "gaia project", "backend pages", "cms", "page templates"],
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "eandraos/gaia-ui": "1.1.x",
+        "eandraos/gaia-seo": "1.0.x"
+    },
+    "autoload": {
+        "psr-0": {
+            "Gaia\\Pages": "src/"
+        }
+    }
+}
