@@ -39,11 +39,11 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
 
 
 	//Pages
-	Route::get('pages/', [ 'as' => 'admin.pages.index', 'uses' => 'PageController@index']);
-	Route::get('pages/create', [ 'as' => 'admin.pages.create', 'uses' => 'PageController@create']);
-	Route::post('pages/store', [ 'as' => 'admin.pages.store',  'uses' => 'PageController@store']);
-	Route::get('pages/{id}/edit',  [ 'as' => 'admin.pages.edit',  'uses'  => 'PageController@edit']);
-	Route::post('pages/{id}/update',  [ 'as' => 'admin.pages.update',  'uses'  => 'PageController@update']);
-	Route::post('pages/{id}/delete',  [ 'as' => 'admin.pages.delete',  'uses'  => 'PageController@destroy']);
+	Route::get('pages/', [ 'as' => 'admin.pages.index', 'uses' => 'Gaia\Pages\PageController@index']);
+	Route::get('pages/create', [ 'as' => 'admin.pages.create', 'uses' => 'Gaia\Pages\PageController@create']);
+	Route::post('pages/store', [ 'as' => 'admin.pages.store',  'uses' => 'Gaia\Pages\PageController@store']);
+	Route::get('pages/{id}/edit',  [ 'as' => 'admin.pages.edit',  'uses'  => 'Gaia\Pages\PageController@edit']);
+	Route::post('pages/{id}/update',  [ 'as' => 'admin.pages.update',  'uses'  => 'Gaia\Pages\PageController@update']);
+	Route::post('pages/{id}/delete',  [ 'as' => 'admin.pages.delete',  'uses'  => 'Gaia\Pages\PageController@destroy']);
 
 });
