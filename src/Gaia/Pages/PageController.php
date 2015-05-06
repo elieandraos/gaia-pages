@@ -2,28 +2,31 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+//Servies
+use Gaia\Services\PageService;
 //Repositories
 use Gaia\Repositories\PageRepositoryInterface;
 use Gaia\Repositories\TemplateRepositoryInterface;
-//Requests
-//use Gaia\Pages\TemplateRequest;
 //Facades
 use Redirect;
 use Input;
 //Models
 use App\Models\Page;
+use App\Models\Seo;
 
 class PageController extends Controller {
 
 	
 	protected $pageRepos, $templateRepos;
+
 	
-	public function __construct(PageRepositoryInterface $pageRepos, TemplateRepositoryInterface $templateRepos)
+	public function __construct(PageRepositoryInterface $pageRepos, TemplateRepositoryInterface $templateRepos, PageService $pageService )
 	{
 		$this->pageRepos = $pageRepos;
 		$this->templateRepos = $templateRepos;
+		$this->pageService = $pageService;
 	}
+
 
 	/**
 	 * Display a listing of the resource.
@@ -32,8 +35,10 @@ class PageController extends Controller {
 	 */
 	public function index()
 	{
-		//
+		$pages = $this->pageRepos->getAll();
+		return view('admin.pages.index', ["pages" => $pages]);
 	}
+
 
 	/**
 	 * Show the form for creating a new resource.
@@ -46,6 +51,7 @@ class PageController extends Controller {
 		return view('admin.pages.create', ['templates' => $templates]);
 	}
 
+
 	/**
 	 * Store a newly created resource in storage.
 	 *
@@ -56,19 +62,13 @@ class PageController extends Controller {
 		$input = Input::all();
 		$input['slug'] = str_slug($input['title']);
 		$page = $this->pageRepos->create($input); 
+		
+		$seo = new Seo;
+		$page->seo()->save($seo);
+
 		return Redirect::route('admin.pages.edit', $page->id);
 	}
 
-	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return Response
-	 */
-	public function show($id)
-	{
-		//
-	}
 
 	/**
 	 * Show the form for editing the specified resource.
@@ -80,7 +80,7 @@ class PageController extends Controller {
 	{
 		$page = $this->pageRepos->find($id);
 		$sections = $this->templateRepos->getSectionsByOrder($page->template_id);
-		return view('admin.pages.edit', ['page' => $page, 'sections' => $sections]);
+		return view('admin.pages.edit', ['page' => $page, 'sections' => $sections, "seo" => $page->seo]);
 
 	}
 
@@ -93,8 +93,11 @@ class PageController extends Controller {
 	public function update($id)
 	{
 		$input = Input::all();
-		dd($input);
+		$page = $this->pageRepos->update($id, $input);
+		$page->seo->updateFromInput($input);
+		return Redirect::route('admin.pages.index');
 	}
+
 
 	/**
 	 * Remove the specified resource from storage.
@@ -104,7 +107,7 @@ class PageController extends Controller {
 	 */
 	public function destroy($id)
 	{
-		//
+		$this->pageRepos->delete($id);
 	}
 
 }
