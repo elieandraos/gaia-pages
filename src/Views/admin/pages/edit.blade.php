@@ -56,7 +56,7 @@
 				</div>
 				<div class="panel-body">
 					@foreach($section->getComponentsByOrder() as $component)
-							{!! $component->renderFormRow() !!}
+							{!! $component->renderFormRow($page->id) !!}
 					@endforeach
 				</div>
 			</div>
@@ -64,6 +64,7 @@
 	</div>
 </div>
 
+@include('admin.seo._form')
 
 <div class="row">
     <div class="col-sm-1  col-sm-push-5">

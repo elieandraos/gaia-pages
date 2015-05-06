@@ -28,10 +28,22 @@ class DropdownComponent extends Component {
 	 * Render the component form row in the page create
 	 * @return type
 	 */
-	public function renderFormRow()
+	public function renderFormRow($pageId)
 	{
 		$options = $this->component->optionsToArray();
-		$view = View::make('admin.templates.components._dropdown_form_row', ['component' => $this->component, 'options' => $options]);
+		$component_page = $this->component->getPivot($pageId);
+		if(isset($component_page)) 
+		{
+			$value  = $component_page->pivot->value;
+			$params = $component_page->pivot->params;
+		}
+		else
+		{
+			$value = 0;
+			$params = [];
+		}
+
+		$view = View::make('admin.templates.components._dropdown_form_row', ['component' => $this->component, 'options' => $options, 'value' => $value]);
 		return $view->render();
 	} 
 }

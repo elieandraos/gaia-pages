@@ -17,4 +17,24 @@ class Page extends Model {
 		return $this->belongsTo('App\Models\Template');
 	}
 
+
+	/**
+	 * Get the components associated with the given page
+	 * @return type
+	 */
+	public function components()
+	{
+		return $this->belongsToMany('App\Models\Component')->withPivot('value', 'params');
+	}
+
+
+	/**
+	 * Morphing to Seo Model
+	 * @return type
+	 */
+	public function seo()
+	{
+	    return $this->morphOne('App\Models\Seo', 'seoable');
+	}
+
 }

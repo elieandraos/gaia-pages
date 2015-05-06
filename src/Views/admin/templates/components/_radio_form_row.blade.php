@@ -2,7 +2,7 @@
 	{!! Form::label('cp_'.$component->id, $component->title, ['class' => 'col-sm-3 control-label']) !!}
     <div class="col-sm-3">
         @foreach($options as $key => $option)
-          {!! Form::radio('cp_'.$component->id.'[]', $component->title, null,[ 'class' => '']) !!}
+          {!! Form::radio('cp_'.$component->id.'[]', trim($option), in_array(trim($option), $value),[ 'class' => '']) !!}
           {!! trim($option) !!}
           <br/>
         @endforeach  
