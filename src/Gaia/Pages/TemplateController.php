@@ -11,6 +11,8 @@ use Gaia\Pages\TemplateRequest;
 //Facades
 use Redirect;
 use Input;
+use Auth;
+use App;
 //Models
 use App\Models\Section;
 use App\Models\Component;
@@ -18,13 +20,14 @@ use App\Models\Component;
 
 class TemplateController extends Controller {
 
-	protected $componentTypeRepos, $templateRepos;
+	protected $componentTypeRepos, $templateRepos, $authUser;
 	
 
 	public function __construct(ComponentTypeRepositoryInterface $componentTypeRepos, TemplateRepositoryInterface $templateRepos)
 	{
 		$this->componentTypeRepos = $componentTypeRepos;
 		$this->templateRepos = $templateRepos;
+		$this->authUser = Auth::user();
 	}
 
 
@@ -34,6 +37,9 @@ class TemplateController extends Controller {
 	 */
 	public function index()
 	{
+		if(!$this->authUser->can('list-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$templates = $this->templateRepos->getAll();
 		return view('admin.templates.index', ['templates' => $templates]);
 	}
@@ -45,6 +51,9 @@ class TemplateController extends Controller {
 	 */
 	public function create()
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+		
 		return view('admin.templates.create');
 	}
 
@@ -56,6 +65,9 @@ class TemplateController extends Controller {
 	 */
 	public function store(TemplateRequest $request)
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$input = $request->all();
 		$template = $this->templateRepos->create($input); 
 
@@ -70,6 +82,10 @@ class TemplateController extends Controller {
 	 */
 	public function build($templateId)
 	{
+		
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$template = $this->templateRepos->find($templateId);
 		$component_types = $this->componentTypeRepos->getAll();
 		$sections = $this->templateRepos->getSectionsByOrder($templateId);
@@ -99,6 +115,9 @@ class TemplateController extends Controller {
 	 */
 	public function storeSection($templateId)
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$section = $this->templateRepos->addEmptySection($templateId);
 		return $section->render();
 	}
@@ -110,6 +129,9 @@ class TemplateController extends Controller {
 	 */
 	public function updateSectionTitle($templateId)
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		 $inputs = Input::all();
          $section = $this->templateRepos->findSection($inputs['pk']);
          $section->title = $inputs['value'];
@@ -124,6 +146,9 @@ class TemplateController extends Controller {
 	 */
 	public function reorderSections($templateId)
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$inputs = Input::all();
 		if(isset($inputs['data']) && count($inputs['data']))
 		{
@@ -144,6 +169,9 @@ class TemplateController extends Controller {
 	 */
 	public function storeComponent($templateId)
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$inputs = Input::all();
 		$component = $this->templateRepos->addComponent($inputs);
 		return $component->render();
@@ -157,6 +185,10 @@ class TemplateController extends Controller {
 	 */
 	public function updateComponentTitle($templateId)
 	{
+		 
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		 $inputs = Input::all();
          $component = $this->templateRepos->findComponent($inputs['pk']);
          $component->title = $inputs['value'];
@@ -193,6 +225,10 @@ class TemplateController extends Controller {
 	 */
 	public function destroyComponent($templateId)
 	{
+		
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$inputs = Input::all();
 		$component = $this->templateRepos->findComponent($inputs['id']);
 		$component->delete();
@@ -206,6 +242,9 @@ class TemplateController extends Controller {
 	 */
 	public function destroySection($templateId)
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$inputs = Input::all();
 		$section = $this->templateRepos->findSection($inputs['id']);
 		$section->delete();
@@ -219,6 +258,9 @@ class TemplateController extends Controller {
 	 */
 	public function updateComponentOptions($templateId)
 	{
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$inputs = Input::all();
 		$component = $this->templateRepos->findComponent($inputs['pk']);
         $component->options = nl2br($inputs['value']);
@@ -233,6 +275,9 @@ class TemplateController extends Controller {
 	 */
 	public function destroy($templateId)
 	{
+		if(!$this->authUser->can('delete-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
 		$template = $this->templateRepos->find($templateId);
 		$template->delete();
 	}
