@@ -30,17 +30,17 @@
 				<div class="form-group @if($errors->has('title')) has-error @endif">
 					{!! Form::label('title', 'Title', ['class' => 'col-sm-3 control-label']) !!}
 		            <div class="col-sm-3">
-		                {!! Form::text('title', null, ['class' => 'form-control slug-target']) !!}
+		                {!! Form::text('title', (isset($page))?$page->title:null, ['class' => 'form-control slug-target']) !!}
 		            </div>
 		            <div class="col-sm-3">
-		                {!! Form::text('slug', null, ['class' => 'form-control txt-slug', 'placeholder' => 'URL slug']) !!}
+		                {!! Form::text('slug', (isset($page))?$page->slug:null, ['class' => 'form-control txt-slug', 'placeholder' => 'URL slug']) !!}
 		            </div>
 		        </div>
 
 		        <div class="form-group @if($errors->has('description')) has-error @endif">
 					{!! Form::label('description', 'Content', ['class' => 'col-sm-3 control-label']) !!}
 		            <div class="col-sm-6">
-		                {!! Form::textarea('description', null, ['class' => 'form-control']) !!}
+		                {!! Form::textarea('description', (isset($page))?$page->description:null, ['class' => 'form-control']) !!}
 		            </div>
 		        </div> 
 			</div>

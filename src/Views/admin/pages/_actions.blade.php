@@ -4,6 +4,12 @@
 	</button>
 </a>
 
+<a href="{{ route('admin.pages.translate', [$page->id, $locale]) }}">
+	<button type="button" class="btn btn-info btn-trans btn-xs btn-action " data-toggle="tooltip" data-placement="top" title="Translate Page">
+		<i class="fa fa-refresh"></i>
+	</button>
+</a>
+
 {!! Form::model($page, ['data-remote' => true, 'data-callback' => 'removeTableRow', 'class' => 'remote-form', 'route' => ['admin.pages.delete', $page->id]]) !!}
 	<a href="#">
 		<button type="button" class="btn btn-danger btn-trans btn-xs btn-action " data-toggle="tooltip" data-placement="top" title="Delete Page" 

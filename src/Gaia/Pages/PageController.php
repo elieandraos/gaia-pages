@@ -12,10 +12,13 @@ use Redirect;
 use Input;
 use Auth;
 use App;
+use MediaLibrary;
+use Flash;
 //Models
 use App\Models\Page;
 use App\Models\Seo;
-use MediaLibrary;
+use App\Models\Locale;
+
 
 class PageController extends Controller {
 
@@ -29,6 +32,10 @@ class PageController extends Controller {
 		$this->templateRepos = $templateRepos;
 		$this->pageService = $pageService;
 		$this->authUser = Auth::user();
+
+		//localization
+		$this->locales = Locale::where('language', '!=', 'en')->lists('language', 'language');
+		$this->first_locale = array_first($this->locales, function(){return true;});
 	}
 
 
@@ -43,7 +50,7 @@ class PageController extends Controller {
 			App::abort(403, 'Access denied');
 
 		$pages = $this->pageRepos->getAll();
-		return view('admin.pages.index', ["pages" => $pages]);
+		return view('admin.pages.index', ["pages" => $pages, "locale" => $this->first_locale]);
 	}
 
 
@@ -131,5 +138,46 @@ class PageController extends Controller {
 
 		$this->pageRepos->delete($id);
 	}
+
+
+	/**
+	 * Translate the translatable fields 
+	 * @param type $news 
+	 * @return type
+	 */
+	public function translate($id, $locale)
+	{
+		if(!$this->authUser->can('translate-pages') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
+		App::setLocale($locale);
+		$page = $this->pageRepos->find($id);
+		$sections = $this->templateRepos->getSectionsByOrder($page->template_id);
+		return view('admin.pages.translate', ['page' => $page, 'sections' => $sections, "seo" => $page->seo, 'locales' => $this->locales, 'locale' => $locale]);
+
+	}
+
+
+	/**
+	 * Save the translated content of the news
+	 * @param type $news 
+	 * @param type $locale 
+	 * @return type
+	 */
+	public function translateStore($id, $locale)
+	{
+		if(!$this->authUser->can('translate-pages') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
+		App::setLocale($locale);
+		$input = Input::all();
+		$page = $this->pageRepos->update($id, $input);
+		$page->seo->updateFromInput($input);
+		App::setLocale("en");
+		
+		Flash::success('Page was translated successfully.');
+		return Redirect::route('admin.pages.index');
+	}
+
 
 }

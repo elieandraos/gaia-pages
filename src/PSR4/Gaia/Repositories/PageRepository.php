@@ -63,11 +63,12 @@ class PageRepository extends DbRepository implements PageRepositoryInterface
 	public function update($id, $input)
 	{
 		$page = $this->find($id);
+		//save the page original attributes
+		$page->update($input);
 		//save the components values		
 		$componentIds = $page->retrieveComponentIds($input);
-		$this->attachComponentPages($componentIds, $id, $input);
-		//save the page
-		$page->update($input); 
+		$this->attachComponentPages($componentIds, $id, $input); 
+
 		return $page;
 	}
 
