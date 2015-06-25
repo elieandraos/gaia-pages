@@ -2,6 +2,7 @@
 
 use App\Models\Component;
 use View;
+use MediaLibrary;
 
 class ImageComponent extends Component {
 
@@ -31,20 +32,21 @@ class ImageComponent extends Component {
 	 */
 	public function renderFormRow($pageId)
 	{
-		$component_page = $this->component->getPivot($pageId);
+		$component_page = $this->component->componentPages()->first();
+
 		if(isset($component_page)) 
 		{
-			$value  = $component_page->pivot->value;
-			$params = $component_page->pivot->params;
+			//get the small preview thumb if image is uploaded
+			$mediaItems = MediaLibrary::getCollection($component_page, $component_page->getMediaCollectionName(), []);
+			(count($mediaItems))?$thumbUrl = $mediaItems[0]->getURL('thumb-xs'):$thumbUrl = null; 
 		}
 		else
 		{
-			$value = "";
-			$params = [];
+			$thumbUrl = null;
 			$component_page = null;
 		}
 
-		$data = ['component' => $this->component, 'component_page' => $component_page, 'pageId' => $pageId, 'value' => $value];
+		$data = ['component' => $this->component, 'component_page' => $component_page, 'pageId' => $pageId, 'thumbUrl' => $thumbUrl];
 		$view = View::make('admin.templates.components._image_form_row', $data );
 		return $view->render();
 	} 

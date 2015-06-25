@@ -2,8 +2,9 @@
 
 use App\Models\Page;
 use App\Models\Component;
-use Input;
+use App\Models\ComponentPage;
 use Gaia\Services\PageService;
+
 
 class PageRepository extends DbRepository implements PageRepositoryInterface 
 {
@@ -62,49 +63,50 @@ class PageRepository extends DbRepository implements PageRepositoryInterface
 	public function update($id, $input)
 	{
 		$page = $this->find($id);
-		$this->pageService = new PageService;
-		//Remove images first if remove_image checkbox is set
-		if(isset($input['remove_image']))
-		{
-			foreach($input['remove_image'] as $key => $component_id)
-			{
-				$component = Component::find($component_id);
-				$component_page = $component->getPivot($id);
-				$imageName = $component_page->pivot->value;
-				$this->pageService->removeImage($page, $imageName);
-				$page->components()->detach($component_id);
-			}
-		}
-		//keys from the input array to get rid of (seo keys, page original fields...)
-		$except = ['_token', 'title', 'slug', 'description', 'remove_image', 'meta_title', 'meta_description', 'meta_keywords', 'facebook_title', 'facebook_description', 'twitter_title', 'twitter_description'];
-		//get the components ids from inputs and update their values
-		$components = array_except($input, $except);
-
-		if(is_array($components) && count($components))
-		{
-			foreach($components as $key => $val)
-		 	{
-		 		if(Input::hasFile($key))
-		 		{
-		 			//upload the image and save the value
-		 			$filename = $this->pageService->uploadImage($page, $input[$key]);
-		 			$id = (int)str_replace("cp_", "", $key);
-		 			$page->components()->detach($id);
-			 		$page->components()->attach([$id => ['value' => $filename]]);
-		 		}
-		 		else
-		 		{
-			 		//update values of $_POST
-			 		$id = (int)str_replace("cp_", "", $key);
-			 		(is_array($val))?$value = implode(",", $val):$value=$val; //in case of checkbox type, implode the array to string
-			 		$page->components()->detach($id);
-			 		$page->components()->attach([$id => ['value' => $value]]);
-			 	}
-		 	}
-		 }
+		//save the components values		
+		$componentIds = $page->retrieveComponentIds($input);
+		$this->attachComponentPages($componentIds, $id, $input);
 		//save the page
 		$page->update($input); 
 		return $page;
+	}
+
+
+	/**
+	 * Save the ComponentPage objects
+	 * @param type $componentIds 
+	 * @param type $id page_id
+	 * @param type $input 
+	 * @return type
+	 */
+	public function attachComponentPages($componentIds, $id, $input)
+	{
+		if(is_array($componentIds) && count($componentIds))
+		{
+			$pageService = new PageService;
+
+			foreach($componentIds as $key => $val)
+			{
+				$componentPage = ComponentPage::firstOrCreate(['component_id' => $key, 'page_id' => $id]);
+				$componentPage->value = $val['value'];
+				$componentPage->save();
+
+				//Remove the image first if remove_image checkbox is set
+				if(isset($input['remove_image']))
+				{
+					$cp = ComponentPage::find($input['remove_image']);
+					$pageService->removeImage($cp);
+				}
+
+				//if the componenet is an image, upload it and save it to the media library
+				if(is_object($val['value']))
+				{	
+					$pageService->uploadImage($componentPage, $val['value']);
+					$componentPage->value = '';
+					$componentPage->save();
+				}
+			}
+		}
 	}
 
 }

@@ -31,12 +31,12 @@ class CheckboxComponent extends Component {
 	public function renderFormRow($pageId)
 	{
 		$options = $this->component->optionsToArray();
-		$component_page = $this->component->getPivot($pageId);
+		$component_page =  $this->component->componentPages()->first();
 		
 		if(isset($component_page)) 
 		{
-			$value  = explode(",",$component_page->pivot->value);
-			$params = $component_page->pivot->params;
+			$value  = explode(",",$component_page->value);
+			$params = $component_page->params;
 		}
 		else
 		{

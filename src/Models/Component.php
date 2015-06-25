@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App;
 
 class Component extends Model {
 
@@ -34,7 +35,17 @@ class Component extends Model {
 	 */
 	public function pages()
 	{
-		return $this->belongsToMany('App\Models\Page')->withPivot('value', 'params');
+		return $this->belongsToMany('App\Models\Page');
+	}
+
+
+	/**
+	 * ComponentPage Relation
+	 * @return type
+	 */
+	public function componentPages()
+	{
+		return $this->hasMany('App\Models\ComponentPage');
 	}
 
 
@@ -70,7 +81,8 @@ class Component extends Model {
 
 
 	/**
-	 * Transforms the options field of the componentType object into an array
+	 * Transforms the options field of the componentType object into an array 
+	 * (used for options edit in place in page templates)
 	 * @return type
 	 */
 	public function optionsToArray()
@@ -80,12 +92,12 @@ class Component extends Model {
 
 
 	/**
-	 * Returns the pivot (value,params) of component_page
+	 * Returns the first ComponentPage of the componentPages() eloquent Relations
 	 * @return type
 	 */
-	public function getPivot($pageId)
+	public function getComponentPage()
 	{
-		return $this->pages()->where('page_id', '=', $pageId)->first();
+		return $this->componentPages()->first();
 	}
 
 

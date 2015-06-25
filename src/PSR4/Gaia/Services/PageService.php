@@ -1,59 +1,38 @@
 <?php namespace Gaia\Services;
 
-use Image;
-use File;
-
 class PageService
 {
 	
 	/**
-	 * Returns the upload path (and creates it recursively)
-	 * @param type $page 
+	 * Handles the image upload for the components inside the page
+	 * @param type $componentPage 
 	 * @return type
 	 */
-    public function getUploadsPath($page)
+	public function uploadImage($componentPage, $uploaded_image)
 	{
-		$path = public_path()."/uploads/pages/".$page->id."/";
-		File::exists($path) or File::makeDirectory($path, 0755, true);
-		return $path;
+		$componentPage->removeMediaCollection($componentPage->getMediaCollectionName());
+		
+		$file = $uploaded_image;
+		$tempDirectory = storage_path('temp');
+		$fileName = $file->getClientOriginalName();
+
+		$file->move($tempDirectory, $fileName);
+		$collectionName = $componentPage->getMediaCollectionName();
+
+		$componentPage->addMedia($tempDirectory . '/' . $fileName, $collectionName);
 	}
 
 
 	/**
-	 * Handles the image upload for the page
-	 * @param type $page 
+	 * Removes the componentPage image
+	 * @param type $componentPage 
 	 * @return type
 	 */
-	public function uploadImage($page, $uploaded_image)
+	public function removeImage($componentPage)
 	{
-		$filename = NULL;
-		if($uploaded_image && $page)
-		{
-			$image = Image::make($uploaded_image->getRealPath()); 
-			$filename = $uploaded_image->getClientOriginalName();
-			$image->save($this->getUploadsPath($page).$filename);
-			$image->resize(32, 32, function($constraint){ $constraint->aspectRatio(); });
-			$image->save($this->getUploadsPath($page)."thumb-xs-".$filename);
-		}
-		return $filename;
+		$componentPage->removeMediaCollection($componentPage->getMediaCollectionName());
 	}
 
-	
-	/**
-	 * Removes the image and its thumb
-	 * @param type $page 
-	 * @return type
-	 */
-	public function removeImage($page, $imageName)
-	{
-		if($page && $imageName)
-		{
-			$image = $this->getUploadsPath($page).$imageName;
-			$thumb = $this->getUploadsPath($page)."thumb-xs-".$imageName;
-			File::delete([$image, $thumb]);
-		}
-	}
 
 }
-
 ?>
