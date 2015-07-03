@@ -7,6 +7,7 @@ use Gaia\Services\PageService;
 //Repositories
 use Gaia\Repositories\PageRepositoryInterface;
 use Gaia\Repositories\TemplateRepositoryInterface;
+use Gaia\Repositories\PostTypeRepositoryInterface;
 //Facades
 use Redirect;
 use Input;
@@ -14,6 +15,7 @@ use Auth;
 use App;
 use MediaLibrary;
 use Flash;
+use View;
 //Models
 use App\Models\Page;
 use App\Models\Seo;
@@ -26,7 +28,7 @@ class PageController extends Controller {
 	protected $pageRepos, $templateRepos;
 
 	
-	public function __construct(PageRepositoryInterface $pageRepos, TemplateRepositoryInterface $templateRepos, PageService $pageService )
+	public function __construct(PageRepositoryInterface $pageRepos, TemplateRepositoryInterface $templateRepos, PageService $pageService, PostTypeRepositoryInterface $postTypeRepositoryInterface )
 	{
 		$this->pageRepos = $pageRepos;
 		$this->templateRepos = $templateRepos;
@@ -36,6 +38,10 @@ class PageController extends Controller {
 		//localization
 		$this->locales = Locale::where('language', '!=', 'en')->lists('language', 'language');
 		$this->first_locale = array_first($this->locales, function(){return true;});
+
+		//share the post type submenu to the layout
+		$this->postTypeRepos = $postTypeRepositoryInterface;
+		View::share('postTypesSubmenu', $this->postTypeRepos->renderMenu());
 	}
 
 

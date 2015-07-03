@@ -6,6 +6,7 @@ use Illuminate\Routing\Controller;
 //Repositories
 use Gaia\Repositories\ComponentTypeRepositoryInterface;
 use Gaia\Repositories\TemplateRepositoryInterface;
+use Gaia\Repositories\PostTypeRepositoryInterface;
 //Requests
 use Gaia\Pages\TemplateRequest;
 //Facades
@@ -13,6 +14,7 @@ use Redirect;
 use Input;
 use Auth;
 use App;
+use View;
 //Models
 use App\Models\Section;
 use App\Models\Component;
@@ -23,11 +25,15 @@ class TemplateController extends Controller {
 	protected $componentTypeRepos, $templateRepos, $authUser;
 	
 
-	public function __construct(ComponentTypeRepositoryInterface $componentTypeRepos, TemplateRepositoryInterface $templateRepos)
+	public function __construct(ComponentTypeRepositoryInterface $componentTypeRepos, TemplateRepositoryInterface $templateRepos, PostTypeRepositoryInterface $postTypeRepositoryInterface)
 	{
 		$this->componentTypeRepos = $componentTypeRepos;
 		$this->templateRepos = $templateRepos;
 		$this->authUser = Auth::user();
+
+		//share the post type submenu to the layout
+		$this->postTypeRepos = $postTypeRepositoryInterface;
+		View::share('postTypesSubmenu', $this->postTypeRepos->renderMenu());
 	}
 
 
