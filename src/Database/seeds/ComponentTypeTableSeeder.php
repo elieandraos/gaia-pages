@@ -61,6 +61,13 @@ class ComponentTypeTableSeeder extends Seeder {
 			"caption" => "Generates a radio list (one choice).",
 			"icon"	=> "fa fa-dot-circle-o"
 		]);		
+
+		ComponentType::create([
+			"title" => "Rich Text",
+			"class_name" => "RichTextComponent",
+			"caption" => "Generates a rich text editor field for larger content.",
+			"icon"	=> "fa fa-quote-left"
+		]);
 		
 	}
 
