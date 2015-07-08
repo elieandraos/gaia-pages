@@ -46,7 +46,7 @@
     <div class="panel-body">
         @foreach($sections as $section)
             @foreach($section->getComponentsByOrder() as $component)
-                @if(in_array($component->component_type_id, [1,2]))
+                @if(in_array($component->component_type_id, [1,2,8]))
                     {!! $component->renderFormRow($page->id) !!} 
                 @endif
             @endforeach
