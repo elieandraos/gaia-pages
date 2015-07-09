@@ -11,7 +11,7 @@
 
 <div class="panel panel-default">
 	<div class="panel-heading">
-		<h3 class="panel-title">Required Info</h3>
+		<h3 class="panel-title">General Info</h3>
 	</div>
 	<div class="panel-body">
 
@@ -27,12 +27,12 @@
             </div>
         </div>
 
-        <div class="form-group @if($errors->has('description')) has-error @endif">
+{{--         <div class="form-group @if($errors->has('description')) has-error @endif">
 			{!! Form::label('description', 'Description', ['class' => 'col-sm-3 control-label']) !!}
             <div class="col-sm-6">
                 {!! Form::textarea('description', $page->description, ['class' => 'form-control']) !!}
             </div>
-        </div>  
+        </div>   --}}
 	</div>
 </div>
 <!-- Panel end -->
