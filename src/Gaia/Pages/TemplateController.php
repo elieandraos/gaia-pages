@@ -22,7 +22,7 @@ use App\Models\Component;
 
 class TemplateController extends Controller {
 
-	protected $componentTypeRepos, $templateRepos, $authUser;
+	protected $componentTypeRepos, $templateRepos, $authUser, $templateTypes;
 	
 
 	public function __construct(ComponentTypeRepositoryInterface $componentTypeRepos, TemplateRepositoryInterface $templateRepos, PostTypeRepositoryInterface $postTypeRepositoryInterface)
@@ -34,6 +34,8 @@ class TemplateController extends Controller {
 		//share the post type submenu to the layout
 		$this->postTypeRepos = $postTypeRepositoryInterface;
 		View::share('postTypesSubmenu', $this->postTypeRepos->renderMenu());
+
+		$this->templateTypes = ['page' => 'page', 'post' => 'post'];
 	}
 
 
@@ -60,7 +62,7 @@ class TemplateController extends Controller {
 		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
 			App::abort(403, 'Access denied');
 		
-		return view('admin.templates.create');
+		return view('admin.templates.create', ['templateTypes' => $this->templateTypes]);
 	}
 
 	
@@ -198,6 +200,23 @@ class TemplateController extends Controller {
 		 $inputs = Input::all();
          $component = $this->templateRepos->findComponent($inputs['pk']);
          $component->title = $inputs['value'];
+         $component->save();
+	}
+
+	/**
+	 * Update a component unique id
+	 * @param type $templateId 
+	 * @return type
+	 */
+	public function updateComponentUniqueId($templateId)
+	{
+		 
+		if(!$this->authUser->can('create-edit-page-templates') && !$this->authUser->is('superadmin'))
+			App::abort(403, 'Access denied');
+
+		 $inputs = Input::all();
+         $component = $this->templateRepos->findComponent($inputs['pk']);
+         $component->unique_id = $inputs['value'];
          $component->save();
 	}
 

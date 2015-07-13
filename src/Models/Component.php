@@ -6,7 +6,7 @@ use App;
 class Component extends Model {
 
 	protected $table = 'component';
-	protected $fillable = ['title', 'order', 'options', 'component_type_id', 'section_id'];
+	protected $fillable = ['title', 'order','unique_id', 'options', 'component_type_id', 'section_id'];
 	protected $hidden = [];
 
 	/**

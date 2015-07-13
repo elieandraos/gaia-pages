@@ -7,12 +7,11 @@
 		<!-- Breadcrumb -->
 		<ul class="breadcrumb">
 		    <li><a href="#">Dashboard</a></li>
-		    <li>Pages</li>
 		    <li>Templates</li>
 		    <li class="active">Create</li>
 		</ul>
 
-		<h1 class="h1">Create New Page Template</h1>
+		<h1 class="h1">Create New Template</h1>
 	</div>
 </div>
 
@@ -32,6 +31,17 @@
 		                {!! Form::text('title', null, ['class' => 'form-control slug-target']) !!}
 		            </div>
 		        </div> 
+		        <div class="form-group">
+		            {!! Form::label('type', 'Type', ['class' => 'col-sm-3 control-label']) !!}
+		            <div class="col-sm-6">
+		                {!! Form::select(
+		                    'type', 
+		                    $templateTypes, 
+		                    null, 
+		                    ['class' => 'form-control', 'id' => 'type']
+		                ) !!}    
+		            </div>
+		        </div>      
 		       	<div class="form-group @if($errors->has('display')) has-error @endif">
 					{!! Form::label('display', 'Display', ['class' => 'col-sm-3 control-label']) !!}
 		            <div class="col-sm-6">

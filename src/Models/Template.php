@@ -5,7 +5,7 @@ use Illuminate\Database\Eloquent\Model;
 class Template extends Model {
 
 	protected $table = 'template';
-	protected $fillable = ['title', 'display'];
+	protected $fillable = ['title', 'display', 'type'];
 	protected $hidden = [];
 
 	/**

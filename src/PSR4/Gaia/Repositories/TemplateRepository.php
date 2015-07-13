@@ -13,9 +13,9 @@ class TemplateRepository extends DbRepository implements TemplateRepositoryInter
 	 * Returns all the pages templates
 	 * @return NewsCollection
 	 */
-	public function getAll()
+	public function getAll($type = 'page')
 	{	
-		return Template::orderBy('title')->paginate($this->limit);
+		return Template::orderBy('title')->where('type', '=', $type)->paginate($this->limit);
 	}
 
 

@@ -10,8 +10,21 @@
 	   data-url="{{ URL::route('admin.pages.templates.update-component-title', $component->section->template_id) }}" 
 	   data-title="Enter text field title"
 	   data-emptytext="Update field title"
+	   style="margin-right:15px;"
 	>
 		{{ $component->title }} 
+	</a>
+
+	<!-- unique id update -->
+	<i class="fa fa-html5" style="margin-right: 0px;"></i>
+	<a href="#" class="component-unique-id" 
+	   data-type="text" 
+	   data-pk="{{$component->id}}"  
+	   data-url="{{ URL::route('admin.pages.templates.update-component-unique-id', $component->section->template_id) }}" 
+	   data-title="Enter text field unique id"
+	   data-emptytext="Update field unique id"
+	>
+		{{ $component->unique_id }} 
 	</a>
 
 	<!-- info -->

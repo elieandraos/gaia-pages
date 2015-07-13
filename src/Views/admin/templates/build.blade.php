@@ -7,7 +7,7 @@
 		<!-- Breadcrumb -->
 		<ul class="breadcrumb">
 		    <li><a href="#">Dashboard</a></li>
-		    <li>Pages</li>
+		    <li>Templates</li>
 		    <li class="active">Template Builder</li>
 		</ul>
 

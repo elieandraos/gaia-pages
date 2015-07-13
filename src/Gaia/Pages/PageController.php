@@ -70,7 +70,7 @@ class PageController extends Controller {
 		if(!$this->authUser->can('create-edit-pages') && !$this->authUser->is('superadmin'))
 			App::abort(403, 'Access denied');
 
-		$templates = $this->templateRepos->getAll()->lists('title', 'id');
+		$templates = $this->templateRepos->getAll('page')->lists('title', 'id');
 		return view('admin.pages.create', ['templates' => $templates]);
 	}
 

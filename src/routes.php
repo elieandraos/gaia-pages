@@ -32,6 +32,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function()
 	Route::post('pages/templates/{id}/update-section-title',  [ 'as' => 'admin.pages.templates.update-section-title',  'uses'  => 'Gaia\Pages\TemplateController@updateSectionTitle']);
 	Route::post('pages/templates/{id}/update-component-title',  [ 'as' => 'admin.pages.templates.update-component-title',  'uses'  => 'Gaia\Pages\TemplateController@updateComponentTitle']);
 	Route::post('pages/templates/{id}/update-component-options',  [ 'as' => 'admin.pages.templates.update-component-options',  'uses'  => 'Gaia\Pages\TemplateController@updateComponentOptions']);
+	Route::post('pages/templates/{id}/update-component-unique-id',  [ 'as' => 'admin.pages.templates.update-component-unique-id',  'uses'  => 'Gaia\Pages\TemplateController@updateComponentUniqueId']);
 
 	//Remove Sections/Components
 	Route::post('pages/templates/{id}/remove-section',  [ 'as' => 'admin.pages.templates.delete-section',  'uses'  => 'Gaia\Pages\TemplateController@destroySection']);
