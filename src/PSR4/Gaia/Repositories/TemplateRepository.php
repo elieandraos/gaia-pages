@@ -20,6 +20,16 @@ class TemplateRepository extends DbRepository implements TemplateRepositoryInter
 
 
 	/**
+	 * Returns all the templates (not filtered by type)
+	 * @return type
+	 */
+	public function getAllTypes()
+	{
+		return Template::orderBy('title')->paginate($this->limit);
+	}
+
+
+	/**
 	 * Returns one template by id
 	 * @param int $id 
 	 * @return News

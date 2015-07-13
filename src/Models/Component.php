@@ -40,12 +40,33 @@ class Component extends Model {
 
 
 	/**
+	 * Get the posts associated with the given component
+	 * @return type
+	 */
+	public function posts()
+	{
+		return $this->belongsToMany('App\Models\Post');
+	}
+
+
+	/**
 	 * ComponentPage Relation
 	 * @return type
 	 */
 	public function componentPages()
 	{
 		return $this->hasMany('App\Models\ComponentPage');
+	}
+
+
+
+	/**
+	 * ComponentPage Relation
+	 * @return type
+	 */
+	public function componentPosts()
+	{
+		return $this->hasMany('App\Models\ComponentPost');
 	}
 
 
@@ -65,17 +86,20 @@ class Component extends Model {
 
 
 	/**
-	 * Renders the form row in the create page
+	 * Renders the form row of the component
+	 * @param type $type 'page' or 'post'
+	 * @param type $id null for create, post_id or page_id for edit 
 	 * @return type
 	 */
-	public function renderFormRow($pageId)
+	public function renderFormRow($type = 'page', $id = null)
 	{
 		$namespace = 'App\Models\Components';
 		$className = "\\".$this->componentType->class_name;
 		$class =  $namespace.$className;
 		$object = new $class;
 		$object->setComponent($this);
-		return $object->renderFormRow($pageId);
+
+		return $object->renderFormRow($type, $id);
 
 	}
 
@@ -91,25 +115,27 @@ class Component extends Model {
 	}
 
 
+
 	/**
-	 * Returns the first ComponentPage of the componentPages() eloquent Relations
+	 * Returns the first ComponentPage of the component_page table 
+	 * @param type $page_id 
 	 * @return type
 	 */
-	public function getComponentPage()
+	public function getComponentPage($page_id)
 	{
 		return $this->componentPages()->first();
 	}
 
 
-	/**
-     * Returns the image thumb relative url of a component inside a page
-     * @param type $size 
-     * @return type
-     */
-    public function getThumbUrl($pageId, $imageName, $size = 'xs')
-    {
-    	return "uploads/pages/".$pageId."/thumb-".$size."-".$imageName;
-    }
 
+	/**
+	 * Returns the first ComponentPost of the component_post table
+	 * @param type $post_id 
+	 * @return type
+	 */
+	public function getComponentPost($post_id)
+	{
+		return $this->componentPosts()->where('post_id', '=', $post_id)->first();
+	}	
 
 }

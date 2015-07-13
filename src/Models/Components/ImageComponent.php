@@ -27,26 +27,32 @@ class ImageComponent extends Component {
 
 
 	/**
-	 * Render the component form row in the page create
+	 * Render the component form row in the page or post create
+	 * @param type $type 
+	 * @param type $id post_id or page_id, can be null for create case
 	 * @return type
 	 */
-	public function renderFormRow($pageId)
+	public function renderFormRow($type = 'page', $id = null)
 	{
-		$component_page = $this->component->componentPages()->first();
+		//cp can be ComponentPage or ComponentPost objects
+		if($type == 'post')
+			$cp = $this->component->getComponentPost($id);
+		else 
+			$cp = $this->component->componentPages()->first();
 
-		if(isset($component_page)) 
+		if(isset($cp)) 
 		{
 			//get the small preview thumb if image is uploaded
-			$mediaItems = MediaLibrary::getCollection($component_page, $component_page->getMediaCollectionName(), []);
+			$mediaItems = MediaLibrary::getCollection($cp, $cp->getMediaCollectionName(), []);
 			(count($mediaItems))?$thumbUrl = $mediaItems[0]->getURL('thumb-xs'):$thumbUrl = null; 
 		}
 		else
 		{
 			$thumbUrl = null;
-			$component_page = null;
+			$cp = null;
 		}
 
-		$data = ['component' => $this->component, 'component_page' => $component_page, 'pageId' => $pageId, 'thumbUrl' => $thumbUrl];
+		$data = ['component' => $this->component, 'cp' => $cp, 'thumbUrl' => $thumbUrl];
 		$view = View::make('admin.templates.components._image_form_row', $data );
 		return $view->render();
 	} 

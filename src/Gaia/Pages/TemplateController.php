@@ -48,7 +48,7 @@ class TemplateController extends Controller {
 		if(!$this->authUser->can('list-page-templates') && !$this->authUser->is('superadmin'))
 			App::abort(403, 'Access denied');
 
-		$templates = $this->templateRepos->getAll();
+		$templates = $this->templateRepos->getAllTypes();
 		return view('admin.templates.index', ['templates' => $templates]);
 	}
 	

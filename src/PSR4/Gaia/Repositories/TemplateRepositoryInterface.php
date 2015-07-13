@@ -4,6 +4,7 @@
 	interface TemplateRepositoryInterface
 	{
 		public function getAll();
+		public function getAllTypes();
 		public function create($input);
 		public function find($templateId);
 		public function addEmptySection($templateId);

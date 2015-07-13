@@ -26,17 +26,24 @@ class ParagraphComponent extends Component {
 
 
 	/**
-	 * Render the component form row in the page create
+	 * Render the component form row in the page or post create
+	 * @param type $type 
+	 * @param type $id post_id or page_id, can be null for create case
 	 * @return type
 	 */
-	public function renderFormRow($pageId)
+	public function renderFormRow($type = 'page', $id = null)
 	{
-		$component_page =  $this->component->componentPages()->first();
-		
-		if(isset($component_page)) 
+		//cp can be ComponentPage or ComponentPost objects
+		if($type == 'post')
+			$cp = $this->component->getComponentPost($id);
+		else 
+			$cp = $this->component->componentPages()->first();
+
+
+		if(isset($cp)) 
 		{
-			$value  = $component_page->value;
-			$params = $component_page->params;
+			$value  = $cp->value;
+			$params = $cp->params;
 		}
 		else
 		{

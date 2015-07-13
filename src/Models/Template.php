@@ -26,4 +26,13 @@ class Template extends Model {
 		return $this->hasMany('App\Models\Page');
 	}
 
+	/**
+	 * Page Relation
+	 * @return type
+	 */
+	public function postTypes()
+	{
+		return $this->hasMany('App\Models\PostType');
+	}
+
 }
